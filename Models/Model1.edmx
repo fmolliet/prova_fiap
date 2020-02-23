@@ -1,0 +1,241 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ProvaDesenvolvimentoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Aluno">
+          <Key>
+            <PropertyRef Name="Codigo" />
+          </Key>
+          <Property Name="Codigo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CodigoSegmento" Type="int" Nullable="false" />
+          <Property Name="CodigoCurso" Type="int" Nullable="false" />
+          <Property Name="RM" Type="int" Nullable="false" />
+          <Property Name="Nome" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="DataNascimento" Type="date" Nullable="false" />
+          <Property Name="DDD" Type="varchar" MaxLength="2" Nullable="false" />
+          <Property Name="Telefone" Type="varchar" MaxLength="9" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Curso">
+          <Key>
+            <PropertyRef Name="Codigo" />
+          </Key>
+          <Property Name="Codigo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CodigoSegmento" Type="int" Nullable="false" />
+          <Property Name="Nome" Type="varchar" MaxLength="150" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Segmento">
+          <Key>
+            <PropertyRef Name="Codigo" />
+          </Key>
+          <Property Name="Codigo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nome" Type="varchar" MaxLength="19" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Aluno_Curso">
+          <End Role="Curso" Type="Self.Curso" Multiplicity="1" />
+          <End Role="Aluno" Type="Self.Aluno" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Curso">
+              <PropertyRef Name="Codigo" />
+            </Principal>
+            <Dependent Role="Aluno">
+              <PropertyRef Name="CodigoCurso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Aluno_Segmento">
+          <End Role="Segmento" Type="Self.Segmento" Multiplicity="1" />
+          <End Role="Aluno" Type="Self.Aluno" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Segmento">
+              <PropertyRef Name="Codigo" />
+            </Principal>
+            <Dependent Role="Aluno">
+              <PropertyRef Name="CodigoSegmento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Curso_Segmento">
+          <End Role="Segmento" Type="Self.Segmento" Multiplicity="1" />
+          <End Role="Curso" Type="Self.Curso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Segmento">
+              <PropertyRef Name="Codigo" />
+            </Principal>
+            <Dependent Role="Curso">
+              <PropertyRef Name="CodigoSegmento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ProvaDesenvolvimentoModelStoreContainer">
+          <EntitySet Name="Aluno" EntityType="Self.Aluno" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Curso" EntityType="Self.Curso" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Segmento" EntityType="Self.Segmento" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Aluno_Curso" Association="Self.FK_Aluno_Curso">
+            <End Role="Curso" EntitySet="Curso" />
+            <End Role="Aluno" EntitySet="Aluno" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Aluno_Segmento" Association="Self.FK_Aluno_Segmento">
+            <End Role="Segmento" EntitySet="Segmento" />
+            <End Role="Aluno" EntitySet="Aluno" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Curso_Segmento" Association="Self.FK_Curso_Segmento">
+            <End Role="Segmento" EntitySet="Segmento" />
+            <End Role="Curso" EntitySet="Curso" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ProvaDesenvolvimentoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Aluno">
+          <Key>
+            <PropertyRef Name="Codigo" />
+          </Key>
+          <Property Name="Codigo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CodigoSegmento" Type="Int32" Nullable="false" />
+          <Property Name="CodigoCurso" Type="Int32" Nullable="false" />
+          <Property Name="RM" Type="Int32" Nullable="false" />
+          <Property Name="Nome" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DataNascimento" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DDD" Type="String" MaxLength="2" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Telefone" Type="String" MaxLength="9" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Curso" Relationship="Self.FK_Aluno_Curso" FromRole="Aluno" ToRole="Curso" />
+          <NavigationProperty Name="Segmento" Relationship="Self.FK_Aluno_Segmento" FromRole="Aluno" ToRole="Segmento" />
+        </EntityType>
+        <EntityType Name="Curso">
+          <Key>
+            <PropertyRef Name="Codigo" />
+          </Key>
+          <Property Name="Codigo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CodigoSegmento" Type="Int32" Nullable="false" />
+          <Property Name="Nome" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Aluno" Relationship="Self.FK_Aluno_Curso" FromRole="Curso" ToRole="Aluno" />
+          <NavigationProperty Name="Segmento" Relationship="Self.FK_Curso_Segmento" FromRole="Curso" ToRole="Segmento" />
+        </EntityType>
+        <EntityType Name="Segmento">
+          <Key>
+            <PropertyRef Name="Codigo" />
+          </Key>
+          <Property Name="Codigo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nome" Type="String" MaxLength="19" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Aluno" Relationship="Self.FK_Aluno_Segmento" FromRole="Segmento" ToRole="Aluno" />
+          <NavigationProperty Name="Curso" Relationship="Self.FK_Curso_Segmento" FromRole="Segmento" ToRole="Curso" />
+        </EntityType>
+        <Association Name="FK_Aluno_Curso">
+          <End Role="Curso" Type="Self.Curso" Multiplicity="1" />
+          <End Role="Aluno" Type="Self.Aluno" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Curso">
+              <PropertyRef Name="Codigo" />
+            </Principal>
+            <Dependent Role="Aluno">
+              <PropertyRef Name="CodigoCurso" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Aluno_Segmento">
+          <End Role="Segmento" Type="Self.Segmento" Multiplicity="1" />
+          <End Role="Aluno" Type="Self.Aluno" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Segmento">
+              <PropertyRef Name="Codigo" />
+            </Principal>
+            <Dependent Role="Aluno">
+              <PropertyRef Name="CodigoSegmento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Curso_Segmento">
+          <End Role="Segmento" Type="Self.Segmento" Multiplicity="1" />
+          <End Role="Curso" Type="Self.Curso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Segmento">
+              <PropertyRef Name="Codigo" />
+            </Principal>
+            <Dependent Role="Curso">
+              <PropertyRef Name="CodigoSegmento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ProvaDesenvolvimentoEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Aluno" EntityType="Self.Aluno" />
+          <EntitySet Name="Curso" EntityType="Self.Curso" />
+          <EntitySet Name="Segmento" EntityType="Self.Segmento" />
+          <AssociationSet Name="FK_Aluno_Curso" Association="Self.FK_Aluno_Curso">
+            <End Role="Curso" EntitySet="Curso" />
+            <End Role="Aluno" EntitySet="Aluno" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Aluno_Segmento" Association="Self.FK_Aluno_Segmento">
+            <End Role="Segmento" EntitySet="Segmento" />
+            <End Role="Aluno" EntitySet="Aluno" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Curso_Segmento" Association="Self.FK_Curso_Segmento">
+            <End Role="Segmento" EntitySet="Segmento" />
+            <End Role="Curso" EntitySet="Curso" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ProvaDesenvolvimentoModelStoreContainer" CdmEntityContainer="ProvaDesenvolvimentoEntities">
+          <EntitySetMapping Name="Aluno">
+            <EntityTypeMapping TypeName="ProvaDesenvolvimentoModel.Aluno">
+              <MappingFragment StoreEntitySet="Aluno">
+                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="CodigoSegmento" ColumnName="CodigoSegmento" />
+                <ScalarProperty Name="CodigoCurso" ColumnName="CodigoCurso" />
+                <ScalarProperty Name="RM" ColumnName="RM" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="DataNascimento" ColumnName="DataNascimento" />
+                <ScalarProperty Name="DDD" ColumnName="DDD" />
+                <ScalarProperty Name="Telefone" ColumnName="Telefone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Curso">
+            <EntityTypeMapping TypeName="ProvaDesenvolvimentoModel.Curso">
+              <MappingFragment StoreEntitySet="Curso">
+                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="CodigoSegmento" ColumnName="CodigoSegmento" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Segmento">
+            <EntityTypeMapping TypeName="ProvaDesenvolvimentoModel.Segmento">
+              <MappingFragment StoreEntitySet="Segmento">
+                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

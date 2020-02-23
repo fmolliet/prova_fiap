@@ -1,0 +1,74 @@
+﻿@model teste_fiap.Models.Aluno
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Aluno</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.RM)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RM)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Nome)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nome)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DataNascimento)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DataNascimento)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DDD)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DDD)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Telefone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Telefone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Curso.Nome)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Curso.Nome)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Segmento.Nome)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Segmento.Nome)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Codigo }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

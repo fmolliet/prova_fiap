@@ -1,0 +1,88 @@
+﻿@model IEnumerable<teste_fiap.Models.Aluno>
+
+
+@{
+    ViewBag.Title = "Lista";
+}
+
+<h2>Lista</h2>
+
+<p>
+    @Html.ActionLink("Cadastrar Novo aluno", "Create")
+</p>
+
+@using (Html.BeginForm())
+{
+<p>
+    RM: @Html.TextBox("SearchRM")
+
+    Nome: @Html.TextBox("SearchNome")
+
+    Segmento: @Html.DropDownList("SearchSegmento", (SelectList)ViewBag.segmentosList)
+    Segmento: @Html.DropDownList(model => model.Segmento, Model.Segmentos, "")
+
+    <input type="submit" value="Buscar" />
+</p>
+}
+
+<table class="table">
+
+
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.RM)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DataNascimento)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DDD)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Telefone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Curso.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Segmento.Nome)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.RM)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataNascimento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DDD)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Telefone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Curso.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Segmento.Nome)
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id = item.Codigo }) |
+                @Html.ActionLink("Visualizar", "Details", new { id = item.Codigo }) |
+                @Html.ActionLink("Excluir", "Delete", new { id = item.Codigo })
+            </td>
+        </tr>
+    }
+
+</table>
