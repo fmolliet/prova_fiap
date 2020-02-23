@@ -22,3 +22,53 @@ select,
 textarea {
     max-width: 280px;
 }
+
+
+/* Estilo do meu app, corrigindo alguns bugs e deixando proximo ao layout desejado */
+.form-index {
+    margin-left: 5%;
+    margin-bottom: 15px;
+    display: inline-flex;
+    border: 3px solid #808080;
+    padding: 25px 10%;
+    align-content: center;
+    border-radius: 5px;
+}
+
+.form-index div {
+    margin-left: 5px;
+}
+
+.form-index input[type="submit"] {
+    margin-left: 5px;
+}
+
+.cadastro {
+    float: right;
+}
+
+.inline {
+    display: inline;
+}
+
+.header-pagename {
+    color: #9d9d9d;
+    padding: 15px 15px;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 20px;
+}
+
+#DDD {
+    width: 5%;
+}
+
+#Telefone {
+    margin-left: 10px;
+    width: 15%;
+
+}
+
+#phone {
+    display:inline-flex;
+}

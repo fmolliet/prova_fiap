@@ -1,88 +1,142 @@
 ﻿@model teste_fiap.Models.Aluno
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Cadastro";
 }
 
-<h2>Create</h2>
 
 
-@using (Html.BeginForm()) 
+
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Aluno</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.CodigoSegmento, "CodigoSegmento", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.CodigoSegmento, "Segmento:", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("CodigoSegmento", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.CodigoSegmento, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.CodigoCurso, "CodigoCurso", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("CodigoCurso", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.CodigoCurso, "", new { @class = "text-danger" })
+        <div id="form-load">
+            <div class="form-group">
+                @Html.LabelFor(model => model.CodigoCurso, "*Curso:", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("CodigoCurso", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.CodigoCurso, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.RM, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.RM, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.RM, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.RM, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.RM, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.RM, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.Nome,"*Nome:", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Nome, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.DataNascimento, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DataNascimento, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DataNascimento, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.DataNascimento,"*Data Nascimento:", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.DataNascimento, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.DataNascimento, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.DDD, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DDD, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DDD, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Telefone, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Telefone, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Telefone, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+            <div class="form-group">
+                @Html.LabelFor(model => model.Telefone,"*Telefone:", htmlAttributes: new { @class = "control-label col-md-2" })
+
+                <div class="col-md-10" id="phone">
+                    @Html.EditorFor(model => model.DDD, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.Telefone, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Telefone, "", new { @class = "text-danger" })
+                    @Html.ValidationMessageFor(model => model.DDD, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
+               
+            <div class="form-group">
+                
+                <div class="col-md-offset-2 col-md-10">
+                    <p class="text-danger" style="">
+                        Os campos com * são obrigatórios
+                    </p>
+                    <input type="submit" value="Salvar" class="btn btn-success" />
+
+                    @Html.ActionLink("Voltar", "Index", null, new { @class = "btn btn-default" })
+
+
+                </div>
+            </div>
+        </div> <!-- form-load -->
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+   <script type="text/javascript" src="/Scripts/jquery.mask.js"></script>
+    <script>
+       $(document).ready(function () {
+           $("#CodigoSegmento").val("");
+           $("#form-load").hide();
+           $('#CodigoCurso').empty();
+           $("#DataNascimento").mask("9999/99/99", {placeholder: 'YYYY/MM/DD' });
+           $("#Telefone").mask('9999-9999', {placeholder: '9999-9999' });
+           $("#DDD").mask('99',  {placeholder: '11' });
+       })
+
+
+
+       $(function () {
+           $("#CodigoSegmento").change(function () {
+               id = $('#CodigoSegmento').val()
+               // Limpa anterior caso tenha mudado
+               $('#CodigoCurso').empty();
+
+               // AJAX Para preencher cursos automaticamente
+               var urlCurso = '@Url.Action("Cursos", "Aluno", new { id = "substitui" })';
+               urlCurso = urlCurso.replace("substitui", id);
+
+               $.ajax({
+                    url: urlCurso,
+                    type: 'get',
+               }).done(function (response) {
+                   $.each(response, function (index, item) {
+                           $('#CodigoCurso').append(
+                               $('<option></option>').val(item.Codigo).html(item.Nome)
+                           );
+                       });
+                    $("#form-load").show();
+               });
+               // AJAX Para preencher Trazer o Ultimo RM
+               var urlRM = '@Url.Action("NextRM", "Aluno", new { id = "substitui" })';
+               urlRM = urlRM.replace("substitui", id);
+
+               $.ajax({ 
+                    url: urlRM,
+                    type: 'get',
+               }).done(function (response) {
+                    $('#RM').val(response);
+               });
+            });
+        })
+    </script>
+
+
 }

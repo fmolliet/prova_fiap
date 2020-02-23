@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -14,43 +16,55 @@ namespace teste_fiap.Controllers
     public class AlunoController : Controller
     {
         private ProvaDesenvolvimentoEntities db = new ProvaDesenvolvimentoEntities();
-        public IEnumerable<SelectListItem> Segmentos { get; set; }
 
-        private IEnumerable<SelectListItem> GetAllStates()
+        private Boolean empty( string variable)
         {
-            IEnumerable<SelectListItem> list = from s in db.Segmento
-                                               select new SelectListItem
-                                               {
-                                                   Selected = false,
-                                                   Text = s.Nome,
-                                                   Value = s.Codigo.ToString()
-                                               };
-            return list;
+            if (String.IsNullOrEmpty(variable))
+                return true;
+            else
+                return false;
         }
 
         // GET: Aluno
-        public ActionResult Index(string SearchRM, string searchNome, string SearchSegmento)
+        public ActionResult Index(string SearchRM, string searchNome, string SearchSegmento, string salvo)
         {
+            // busca alunos para filtrar 
             var alunos = from a in db.Aluno
-            select a;
+                         // where a.Segmento.Nome == SearchSegmento || SearchSegmento.Equals(null) || SearchSegmento.Equals("")
+                         select a;
+            // Traz todos alunos incluido o curso e segmento
             var aluno = db.Aluno.Include(a => a.Curso).Include(a => a.Segmento);
 
-            var segmentos = GetAllStates();
-           
-            ViewBag.segmentosList = new SelectList(segmentos);
-            Segmentos = new SelectList(segmentos);
-
-            if (!String.IsNullOrEmpty(SearchRM))
+            /**
+             * Sistema de filtro
+             */
+            if (!empty(SearchRM))
             {
                 aluno = alunos.Where(a => a.RM.ToString() == SearchRM);
             }
-            if (!String.IsNullOrEmpty(searchNome) && String.IsNullOrEmpty(SearchRM))
+            if (!empty(searchNome) && empty(SearchRM) && empty(SearchSegmento))
             {
                 aluno = alunos.Where(a => a.Nome.Contains(searchNome));
             }
-            else if(!String.IsNullOrEmpty(searchNome) && !String.IsNullOrEmpty(SearchRM))
+            else if(!empty(searchNome) && !empty(SearchRM) && empty(SearchSegmento))
             {
                 aluno = alunos.Where(a => a.RM.ToString() == SearchRM || a.Nome.Contains(searchNome));
+            }
+            else if (empty(searchNome) && empty(SearchRM) && !empty(SearchSegmento))
+            {
+                aluno = alunos.Where(a => a.CodigoSegmento.ToString().Contains(SearchSegmento));
+            }
+            else if (empty(searchNome) && !empty(SearchRM) && !empty(SearchSegmento))
+            {
+                aluno = alunos.Where(a => a.CodigoSegmento.ToString().Contains(SearchSegmento) || a.RM.ToString() == SearchRM);
+            }
+            else if (!empty(searchNome) && empty(SearchRM) && !empty(SearchSegmento))
+            {
+                aluno = alunos.Where(a => a.CodigoSegmento.ToString().Contains(SearchSegmento) || a.Nome.Contains(searchNome));
+            }
+            else if (!empty(searchNome) && !empty(SearchRM) && !empty(SearchSegmento))
+            {
+                aluno = alunos.Where(a => a.CodigoSegmento.ToString().Contains(SearchSegmento) || a.RM.ToString() == SearchRM || a.Nome.Contains(searchNome));
             }
 
 
@@ -89,8 +103,28 @@ namespace teste_fiap.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Aluno.Add(aluno);
-                db.SaveChanges();
+
+                try
+                {
+                    db.Aluno.Add(aluno);
+                    db.SaveChanges();
+                    return RedirectToAction("Index", "Aluno", new { salvo = "OK" });
+                }
+                catch (DbEntityValidationException e)
+                {
+                    foreach (var eve in e.EntityValidationErrors)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                            eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                        foreach (var ve in eve.ValidationErrors)
+                        {
+                            System.Diagnostics.Debug.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                                ve.PropertyName, ve.ErrorMessage);
+                        }
+                    }
+                    
+                }
+
                 return RedirectToAction("Index");
             }
 
@@ -158,6 +192,58 @@ namespace teste_fiap.Controllers
             db.Aluno.Remove(aluno);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        // GET: Aluno/Cursos/1
+        [HttpGet]
+        public ActionResult Cursos(int id)
+        {
+            // Trás todos cursos
+            var cursos = from c in db.Curso select c;
+            // Filtra por qual foi recebido
+            var cursos_disponiveis = cursos.Where(c => c.CodigoSegmento == id);
+            // Serializa e passa pra JSOn
+            JsonSerializerSettings jsSettings = new JsonSerializerSettings();
+            jsSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            // Cria variavel para retornar para o front
+            var dado_convertido = JsonConvert.SerializeObject(cursos_disponiveis, null, jsSettings);
+
+            return Content(dado_convertido, "application/json");
+        }
+
+        // GET: Aluno/NextRM/1
+        [HttpGet]
+        public ActionResult NextRM(int id)
+        {
+            // Trás todos cursos
+            var lastAlunos = from a in db.Aluno 
+                         select a;
+            // Filtra por qual foi recebido
+            int max = 0;
+            int min = 0;
+            switch (id)
+            {
+                case 1:
+                    max = 29999;
+                    min = 1000;
+                break;
+                case 2:
+                    max = 79999;
+                    min = 50000;
+                break;
+                case 3:
+                    max = 49999;
+                    min = 30000;
+               break;
+            }
+            var alunosSegmentados = lastAlunos.Where(a => a.CodigoSegmento == id && (a.RM >= min  && a.RM <= max)).Max(a => a.RM + 1);
+            // Serializa e passa pra JSOn
+            JsonSerializerSettings jsSettings = new JsonSerializerSettings();
+            jsSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            // Cria variavel para retornar para o front
+            var dado_convertido = JsonConvert.SerializeObject(alunosSegmentados, null, jsSettings);
+
+            return Content(dado_convertido , "application/json");
         }
 
         protected override void Dispose(bool disposing)

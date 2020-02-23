@@ -5,8 +5,8 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="e85108fb42f447a589d8b7283454a7bf" Name="Diagram1">
-        <EntityTypeShape EntityType="ProvaDesenvolvimentoModel.Aluno" Width="1.5" PointX="5.75" PointY="2.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProvaDesenvolvimentoModel.Curso" Width="1.5" PointX="8.875" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProvaDesenvolvimentoModel.Aluno" Width="1.5" PointX="4.875" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProvaDesenvolvimentoModel.Curso" Width="1.5" PointX="4" PointY="5" IsExpanded="true" />
         <EntityTypeShape EntityType="ProvaDesenvolvimentoModel.Segmento" Width="1.5" PointX="0.75" PointY="3" IsExpanded="true" />
         <AssociationConnector Association="ProvaDesenvolvimentoModel.FK_Aluno_Curso" ManuallyRouted="false" />
         <AssociationConnector Association="ProvaDesenvolvimentoModel.FK_Aluno_Segmento" ManuallyRouted="false" />

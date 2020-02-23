@@ -20,17 +20,16 @@
                 </button>
                 @Html.ActionLink("Cadastro de alunos", "Index", "", new { area = "" }, new { @class = "navbar-brand" })
             </div>
-            <div class="navbar-header">
+            <div class="header-pagename">
+                @ViewBag.Title
             </div>
         </div>
     </div>
     <div class="container body-content">
 
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Cadastro de alunos</p>
-        </footer>
+        
+        
     </div>
 
     @Scripts.Render("~/bundles/jquery")

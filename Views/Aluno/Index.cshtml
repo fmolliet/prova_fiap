@@ -5,25 +5,34 @@
     ViewBag.Title = "Lista";
 }
 
-<h2>Lista</h2>
 
-<p>
-    @Html.ActionLink("Cadastrar Novo aluno", "Create")
-</p>
 
+
+<h4> Filtro</h4>
 @using (Html.BeginForm())
 {
-<p>
-    RM: @Html.TextBox("SearchRM")
+<div class="form-index">
+    <div>RM: @Html.TextBox("SearchRM")</div>
 
-    Nome: @Html.TextBox("SearchNome")
+    <div>Nome: @Html.TextBox("SearchNome")</div>
 
-    Segmento: @Html.DropDownList("SearchSegmento", (SelectList)ViewBag.segmentosList)
-    Segmento: @Html.DropDownList(model => model.Segmento, Model.Segmentos, "")
+    <div>
+        Segmento: @Html.DropDownList("SearchSegmento", new[]{
+new SelectListItem { Value = "1", Text = "COPI: Colégio" },
+new SelectListItem { Value = "2", Text = "FIAP: Graduação" },
+new SelectListItem { Value = "3", Text = "FIAP: Pós-Graduação" }
+}, "")
+    </div>
+    <div>
+        <input type="submit" value="Pesquisar" />
+    </div>
 
-    <input type="submit" value="Buscar" />
-</p>
+</div>
 }
+
+<p class="cadastro">
+    @Html.ActionLink("Cadastrar Novo aluno", "Create")
+</p>
 
 <table class="table">
 
@@ -35,22 +44,16 @@
         <th>
             @Html.DisplayNameFor(model => model.Nome)
         </th>
+
         <th>
-            @Html.DisplayNameFor(model => model.DataNascimento)
+            Segmento
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.DDD)
+            Curso
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Telefone)
+            Operações
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Curso.Nome)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Segmento.Nome)
-        </th>
-        <th></th>
     </tr>
 
     @foreach (var item in Model)
@@ -62,27 +65,56 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Nome)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataNascimento)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DDD)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Telefone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Curso.Nome)
-            </td>
+
             <td>
                 @Html.DisplayFor(modelItem => item.Segmento.Nome)
             </td>
             <td>
-                @Html.ActionLink("Editar", "Edit", new { id = item.Codigo }) |
-                @Html.ActionLink("Visualizar", "Details", new { id = item.Codigo }) |
-                @Html.ActionLink("Excluir", "Delete", new { id = item.Codigo })
+                @Html.DisplayFor(modelItem => item.Curso.Nome)
+            </td>
+
+            <td>
+                <a class="details" data-id="@item.Codigo">Visualizar</a> | 
+                <a class="delete" data-id="@item.Codigo">Deletar</a>
             </td>
         </tr>
     }
 
 </table>
+<hr />
+<footer>
+    <p>&copy; FIAP - Faculdade de Informática e Administração Paulista</p>
+</footer>
+
+
+<div id="modal" class="modal fade" role="dialog" />
+@section scripts{
+   
+    <script>
+         $(document).ready(function () {
+             if (teste = window.location.search.substring(1)){
+                alert("Aluno cadastrado com sucesso!");
+             }
+           })
+
+
+        $(function () {
+            $(".details").click(function () {
+                var id = $(this).attr("data-id");
+                //alert(id);
+                $("#modal").load("Aluno/Details/" + id, function () {
+                    $("#modal").modal();
+                })
+            });
+            
+            $(".delete").click(function () {
+                var id = $(this).attr("data-id");
+                //alert(id);
+                $("#modal").load("Aluno/Delete/" + id, function () {
+                    $("#modal").modal();
+                })
+            });
+
+        })
+    </script>
+}
